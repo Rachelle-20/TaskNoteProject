@@ -58,29 +58,9 @@ class AuthController extends Controller
     }
 
     public function login(Request $request)
+
     {
-        // $data = $request->validate([
-        //     'email' => 'required|string|email',
-        //     'password' => 'required|string',
-        // ]);
-
-        // $user = User::where('email', $data['email'])->first();
-
-        // if (!$user || !Hash::check($data['password'], $user->password)) {
-        //     return response([
-        //         "message" => "Bad Credentials",
-        //     ], 401);
-        // }
-
-        // $token = $user->createToken('sanctum-token')->plainTextToken;
-
-        // $response = [
-        //     'user' => $user,
-        //     'token' => $token,
-        // ];
-
-        // return response($response, 200);
-
+    
         $request->validate([
             'email'=>'required|email',
             'password'=>'required',
@@ -96,6 +76,7 @@ class AuthController extends Controller
     }
 
     public function logout(Request $request)
+
     {
         auth()->user()->tokens()->delete();
         return [

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Note;
@@ -22,7 +23,10 @@ class NoteController extends Controller
 
         $note = Note::create($request->all());
 
-        return response()->json($note, 201);
+        return response()->json([
+            'message' => 'Note created successfully',
+            'note' => $note
+        ], 200);
     }
 
     public function show(Note $note)
@@ -42,7 +46,10 @@ class NoteController extends Controller
 
         $note->update($request->all());
 
-        return response()->json($note, 200);
+        return response()->json([
+            'message' => 'Note updated successfully',
+            'note' => $note
+        ], 200);
     }
 
     public function destroy(Note $note)
@@ -51,6 +58,8 @@ class NoteController extends Controller
 
         $note->delete();
 
-        return response()->json(null, 204);
+        return response()->json([
+            'message' => 'Note deleted successfully'
+        ], 200); // Change to 200 OK to return a message
     }
 }

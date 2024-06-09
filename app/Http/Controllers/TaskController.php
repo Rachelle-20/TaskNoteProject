@@ -7,22 +7,16 @@ use App\Models\Task;
 
 class TaskController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         return Task::with('priority', 'notes')->where('user_id', auth()->id())->get();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'description' => 'required|string',
             'status' => 'required',
             'due_date' => 'required',
             'priority_id' => 'required|exists:priorities,id',
@@ -45,8 +39,8 @@ class TaskController extends Controller
         $this->authorize('update', $task);
 
         $request->validate([
-            'title' => 'sometimes|required|string|max:255',
-            'description' => 'nullable|string',
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
             'status' => 'required',
             'due_date' => 'required',
             'priority_id' => 'sometimes|required|exists:priorities,id',
@@ -54,7 +48,10 @@ class TaskController extends Controller
 
         $task->update($request->all());
 
-        return response()->json($task, 200);
+        return response()->json([
+            'message' => 'Task updated successfully',
+            'task' => $task
+        ], 200);
     }
 
     public function destroy(Task $task)
@@ -63,17 +60,13 @@ class TaskController extends Controller
 
         $task->delete();
 
-        return response()->json(null, 204);
+        return response()->json([
+            'message' => 'Task deleted successfully'
+        ], 200); // Change to 200 OK
     }
 
-    /**
-     * Search for tasks by title.
-     */
     public function search($status)
     {
         return Task::where('status', 'like', '%' . $status . '%')->get();
     }
 }
-
-
-

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Priority;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
 
 class PriorityController extends Controller
 {
@@ -37,13 +36,18 @@ class PriorityController extends Controller
 
         $priority->update($request->all());
 
-        return response()->json($priority, 200);
+        return response()->json([
+            'message' => 'Priority updated successfully',
+            'priority' => $priority
+        ], 200);
     }
 
     public function destroy(Priority $priority)
     {
         $priority->delete();
 
-        return response()->json(null, 204);
+        return response()->json([
+            'message' => 'Priority deleted successfully'
+        ], 200); // Change to 200 OK to return a message
     }
 }
